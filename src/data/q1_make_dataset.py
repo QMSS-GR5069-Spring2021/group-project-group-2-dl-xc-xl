@@ -36,7 +36,7 @@ constructors = (
 # Read in results data
 results = spark.read.csv("s3://columbia-gr5069-main/raw/results.csv", header=True, inferSchema=True)
 # Keep necessary columns
-results = results.select("raceId", "driverId", "constructorId", "grid", "positionOrder")
+results = results.select("raceId", "driverId", "constructorId", "grid", "positionOrder","points","laps","milliseconds","fastestLap","rank","fastestLapSpeed","statusId")
 
 # Combine data
 combo = (
@@ -46,11 +46,6 @@ combo = (
   .join(constructors, "constructorId", how="left")
 )
 
-# Restrict data to 1950 - 2010 only
-combo = combo.filter((F.col("race_year") >= 1950) & (F.col("race_year") <= 2010))
-
-# Remove grid = 0 records
-combo = combo.filter(F.col("grid") != 0)
 
 # Save data in s3
-combo.write.csv("s3://group2-gr5069/processed/q1/q1_combo_f1_data.csv", header="true", mode="overwrite")
+combo.write.csv("s3://group2-gr5069/processed/project/combo_f1_data.csv", header="true", mode="overwrite")
