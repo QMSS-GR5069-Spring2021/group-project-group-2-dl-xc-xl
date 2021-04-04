@@ -3,45 +3,6 @@
 
 # COMMAND ----------
 
-# MAGIC %md ####Q1-2
-# MAGIC (1) [25pts] Your first task is inferential. You are going to try to explain why a driver arrives in second place in a race between
-# MAGIC 1950 and 2010. Fit a model using features that make theoretical sense to describe F1 racing between 1950 and 2010. Clean the
-# MAGIC data, and transform it as necessary, including dealing with missing data. [Remember, this will almost necessarily be an overfit
-# MAGIC model where variables are selected because they make sense to explain F1 races between 1950 and 2010, and not based on
-# MAGIC algorithmic feature selection]
-# MAGIC 
-# MAGIC From your fitted model:
-# MAGIC ● describe your model, and explain why each feature was selected
-# MAGIC 
-# MAGIC ● provide statistics that show how well the model fits the data
-# MAGIC 
-# MAGIC ● what is the most important variable in your model? How did you determine that?
-# MAGIC 
-# MAGIC ● provide some marginal effects for the variable that you identified as the most important in the model, and interpret it in
-# MAGIC the context of F1 races: in other words, give us the story that the data is providing you about drivers that come in
-# MAGIC second place
-# MAGIC 
-# MAGIC ● does it make sense to think of it as an "explanation" for drivers arriving in second place? or is it simply an association
-# MAGIC we observe in the data?
-# MAGIC 
-# MAGIC (2) [25pts] Now we move on to prediction. Fit a model using data from 1950:2010, and predict drivers that come in second place
-# MAGIC between 2011 and 2017. [Remember, this is a predictive model where variables are selected as the subset that is best at predicting
-# MAGIC the target variable and not for theoretical reasons. This means that your model should not overfit and most likely be different
-# MAGIC from the model in (1).]
-# MAGIC 
-# MAGIC From your fitted model:
-# MAGIC 
-# MAGIC ● describe your model, and explain how you selected the features that were selected
-# MAGIC 
-# MAGIC ● provide statistics that show how good your model is at predicting, and how well it performed predicting second places
-# MAGIC in races between 2011 and 2017
-# MAGIC 
-# MAGIC ● the most important variable in (1) is bound to also be included in your predictive model. Provide marginal effects or
-# MAGIC some metric of importance for this variable and make an explicit comparison of this value with the values that you
-# MAGIC obtained in (1). How different are they? Why are they different?
-
-# COMMAND ----------
-
 # MAGIC %md ### Final Project
 # MAGIC (3) [25pts] This task is inferential. You are going to try to explain why a constructor wins a season between 1950 and 2010. Fit a
 # MAGIC model using features that make theoretical sense to describe F1 racing between 1950 and 2010. Clean the data, and transform it
