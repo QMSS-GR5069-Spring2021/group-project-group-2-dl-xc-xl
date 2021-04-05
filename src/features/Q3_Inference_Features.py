@@ -26,6 +26,7 @@
 # COMMAND ----------
 
 import pandas as pd
+import numpy as np
 
 # COMMAND ----------
 
@@ -60,12 +61,139 @@ win.head(10)
 
 # COMMAND ----------
 
-# MAGIC %md ###To Do:
-# MAGIC ##### - Pick relevant variables for modeling
-# MAGIC ##### - Transform data types
-# MAGIC ##### - Look at Summary Statistics
-# MAGIC 
-# MAGIC #print(f1_pandas[["grid","positionOrder","laps","milliseconds","fastestLap","fastestLapSpeed","rank"]].astype(int).describe())
+win.info()
+
+# COMMAND ----------
+
+#Converting selected columns to numeric type
+win[["grid", "positionOrder","points_x","laps","milliseconds","rank","fastestLapSpeed","age_as_of_race","position","wins"]] = win[["grid", "positionOrder","points_x","laps","milliseconds","rank","fastestLapSpeed","age_as_of_race","position","wins"]].apply(pd.to_numeric)
+win.astype("str")
+win['race_date'] =  pd.to_datetime(win['race_date'])
+
+#Add season column
+def season_of_date(date):
+    year = str(date.year)
+    seasons = {'spring': pd.date_range(start='21/03/'+year, end='20/06/'+year),
+               'summer': pd.date_range(start='21/06/'+year, end='22/09/'+year),
+               'autumn': pd.date_range(start='23/09/'+year, end='20/12/'+year)}
+    if date in seasons['spring']:
+        return 'spring'
+    if date in seasons['summer']:
+        return 'summer'
+    if date in seasons['autumn']:
+        return 'autumn'
+    else:
+        return 'winter'
+
+# Assuming df has a date column of type `datetime`
+win['season'] = win.race_date.map(season_of_date)
+
+#win.groupby("constructorId")["wins"].sum().sort_values(ascending=False)
+
+# COMMAND ----------
+
+win.sort_values(by="race_year")
+
+# COMMAND ----------
+
+#filter for years between 1950 to 2010
+wins = win[win["race_year"] <= "2010"]
+
+#select key variables(dropped "rank" and "fatestLapSpeed" because there are too many missing values;didn't include race name becasue we want to explain win by season)
+constructor_win = wins[["constructorId","race_year","grid","positionOrder","points_x","laps","constructorRef","constructor_nationality","age_as_of_race","wins","season"]]
+
+#fill missing value with 0
+constructor_win["wins"]=constructor_win["wins"].fillna("0")
+
+#convert object to numeirc
+constructor_win["wins"] = pd.to_numeric(constructor_win["wins"])
+#new dataframe for inference model
+constructor_win.info()
+
+# COMMAND ----------
+
+#season can vary in each year
+constructor_win[constructor_win["constructorId"] == "1" ]
+
+# COMMAND ----------
+
+#Recode constructor nationality
+conditions = [
+    (constructor_win["constructor_nationality"].isin(["British","Italian","French","German","Austrian","Swiss","Dutch","Russian","Belgium","Irish","East German"])) ,
+    (constructor_win["constructor_nationality"].isin(["American","Canadian","Mexican"])) ,
+    (constructor_win["constructor_nationality"].isin(["Malaysian","Japanese","Indian","Hong kong"]))]
+choices = [1, 2, 3]
+constructor_win['continent'] = np.select(conditions, choices, default=np.nan)
+
+#one-hot-encode season
+constructor_win = pd.get_dummies(constructor_win, columns=["season"], prefix = ['s'])
+
+
+# COMMAND ----------
+
+# MAGIC %md ######Save dataframe to S3
+
+# COMMAND ----------
+
+# Create a Spark DataFrame from a pandas DataFrame using Arrow
+constructor_win_sp = spark.createDataFrame(constructor_win)
+constructor_win_sp.write.csv('s3://group2-gr5069/processed/Q3/Constructor_season.csv')
+
+# COMMAND ----------
+
+#groupby constructorId, constructorRef, race_year
+congroup = constructor_win.groupby(['constructorId','constructorRef','race_year']).mean()
+congroup
+# Print the first value in each group
+#congroup.first()
+
+# COMMAND ----------
+
+# MAGIC %md ####Let's try our first LR model!
+
+# COMMAND ----------
+
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# COMMAND ----------
+
+#groupby constructorId, constructorRef, race_year
+congroup = constructor_win.groupby(['constructorId','constructorRef','race_year']).mean()
+congroup
+# Print the first value in each group
+#congroup.first()
+
+# COMMAND ----------
+
+lr1 = smf.ols('wins ~ grid+positionOrder+points_x+laps+age_as_of_race+s_autumn+s_spring+s_summer+s_winter+continent', data = congroup).fit()
+print (lr1.summary())
+
+# COMMAND ----------
+
+constructor_results = spark.read.csv('s3://columbia-gr5069-main/raw/constructor_results.csv', header = True)
+constructor_standing = spark.read.csv('s3://columbia-gr5069-main/raw/constructor_standings.csv', header=True)
+constructor = spark.read.csv('s3://columbia-gr5069-main/raw/constructors.csv', header=True)
+season = spark.read.csv('s3://columbia-gr5069-main/raw/seasons.csv', header=True)
+
+# COMMAND ----------
+
+#Convert PySpark dataframe to pandas dataframe 
+con_results = constructor_results.toPandas()
+con_standing = constructor_standing.toPandas()
+con = constructor.toPandas()
+
+# COMMAND ----------
+
+con_standing
+
+# COMMAND ----------
+
+con
+
+# COMMAND ----------
+
+con.nationality.value_counts()
 
 # COMMAND ----------
 
