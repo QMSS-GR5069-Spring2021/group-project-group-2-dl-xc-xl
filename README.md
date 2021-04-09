@@ -8,7 +8,7 @@ Group 2
 Derek Li: Q1
 
 
-Xinyang Chen: Q2, data-preprocessing, data visualization 
+Xinyang Chen: Q2
 
 
 Xuejing Li: Q3 
