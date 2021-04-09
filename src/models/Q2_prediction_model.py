@@ -383,33 +383,16 @@ summary.residuals().show()
 
 # COMMAND ----------
 
+feature_names = ["intercept"] + input_cols_2
 coefs = [glr_model_2.intercept] + [float(num) for num in glr_model_2.coefficients]
 
-model_stats_df = spark.createDataFrame(data=model_stats, schema=columns)
+model_summary = list(zip(feature_names, coefs))
+model_summary_df = spark.createDataFrame(data=model_summary, schema=columns)
 
 
 # COMMAND ----------
 
-display(model_stats_df)
-
-# COMMAND ----------
-
-# Now run a model on all the features 
-
-# COMMAND ----------
-
-# Save model summary
-summary = logit_model.summary
-
-coefs = [glr_model.intercept] + [float(num) for num in glr_model.coefficients]
-model_stats = list(zip(coefs))
-
-columns = ["coef"]
-model_stats_df = spark.createDataFrame(data=model_stats, schema=columns)
-
-# COMMAND ----------
-
-display(model_stats_df)
+display(model_summary_df)
 
 # COMMAND ----------
 
