@@ -16,6 +16,17 @@ Xuejing Li: Q3
 
 ## Repo Map
 
+├── src/
+	├── data
+	├── features
+	├── models
+	├── visualizations
+├── reports/
+	├── documents
+	├── figures
+├── references/
+├── README.md
+
 Please see each subfolder for a README file.
 
 
