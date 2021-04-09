@@ -2,15 +2,8 @@
 
 Term: Spring 2021
 
-Group 2
-Team members
-
-Xinyang Chen
-Derek Li
-Xuejing Li
-
-
-Contribution Breakdown
+Group 2**
+Team Contribution**
 
 Derek Li: Q1
 
@@ -20,19 +13,20 @@ Xinyang Chen: Q2, data-preprocessing, data visualization
 
 Xuejing Li: Q3 
 
-
-Repo Map
+**
+Repo Map**
 
 Please see each subfolder for a README file.
 
-Framework of Solution:
+**
+Framework of Solution:**
 Question 1 
 
 
 Question 2
 
 
-We want to experiment with a few models e.g. linear regression, random forest, etc.
+Used random forest and logistic regression for prediction and model validation. 
 
 
 Question 3 
