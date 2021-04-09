@@ -3,7 +3,7 @@
 Term: Spring 2021
 
 Group 2
-# Team Contribution
+## Team Contribution
 
 Derek Li: Q1
 
@@ -14,12 +14,12 @@ Xinyang Chen: Q2, data-preprocessing, data visualization
 Xuejing Li: Q3 
 
 
-# Repo Map
+## Repo Map
 
 Please see each subfolder for a README file.
 
 
-# Framework of Solution
+## Framework of Solution
 Question 1 
 
 
