@@ -40,10 +40,11 @@ logit_model = logit.fit(vec_df)
 # Save model summary
 summary = glr_model.summary
 
+feature_names = ["intercept"] + feature_cols
 coefs = [glr_model.intercept] + [float(num) for num in glr_model.coefficients]
-model_stats = list(zip(coefs, summary.coefficientStandardErrors, summary.tValues, summary.pValues))
+model_stats = list(zip(feature_names, coefs, summary.coefficientStandardErrors, summary.tValues, summary.pValues))
 
-columns = ["coef", "std_error", "t_value", "p_value"]
+columns = ["feature_name", "coef", "std_error", "t_value", "p_value"]
 model_stats_df = spark.createDataFrame(data=model_stats, schema=columns)
 
 model_stats_df.write.csv("s3://group2-gr5069/processed/q1/q1_model_summary.csv", header="true", mode="overwrite")
