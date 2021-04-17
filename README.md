@@ -25,10 +25,9 @@ Xuejing Li: Q3
 	├── documents
 	├── figures
 ### references/
-#### README.md
 
 
-##### Project Description: 
+## Project Description: 
 
 This project uses inferential model and prediction model to explain or predict the performace of drivers and constructors in the F1 race bewteen 1950 and 2010. The raw data and the code for preprocessing the data can be found under the "src/data" folder. We stored the code for feature building under the "src/features" folder, and the code for model experimentations under the "src/models" folder. The "src/visualizations" folder contains screenshots of the model experiments. Under the reports folder, you can find our analysis for all three questions below. Please see each subfolder for a README file.
 
