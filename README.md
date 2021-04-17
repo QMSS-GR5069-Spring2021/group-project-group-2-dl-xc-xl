@@ -28,7 +28,9 @@ Xuejing Li: Q3
 #### README.md
 
 
-Please see each subfolder for a README file.
+##### Project Description: 
+
+This project uses inferential model and prediction model to explain or predict the performace of drivers and constructors in the F1 race bewteen 1950 and 2010. The raw data and the code for preprocessing the data can be found under the "src/data" folder. We stored the code for feature building under the "src/features" folder, and the code for model experimentations under the "src/models" folder. The "src/visualizations" folder contains screenshots of the model experiments. Under the reports folder, you can find our analysis for all three questions below. Please see each subfolder for a README file.
 
 
 ## Framework of Solution
@@ -49,4 +51,4 @@ Now we move on to prediction. Fit a model using data from 1950:2010, and predict
 ### Question 3： 
 This task is inferential. You are going to try to explain why a constructor wins a season between 1950 and 2010. Fit a model using features that make theoretical sense to describe F1 racing between 1950 and 2010. Clean the data, and transform it as necessary, including dealing with missing data. [Remember, this will almost necessarily be an overfit model where variables are selected because they make sense to explain F1 races between 1950 and 2010, and not based on algorithmic feature selection]
 
-
+Used logistic regression to explain why a constcutor wins a season between 1950 and 2010, and found that the total points for each constructor is the most influential factor that would increase the constructor's odds of wining the season
