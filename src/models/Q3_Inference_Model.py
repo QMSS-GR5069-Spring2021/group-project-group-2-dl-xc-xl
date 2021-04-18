@@ -24,6 +24,7 @@
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import pandas as pd
+import numpy as np
 
 # COMMAND ----------
 
@@ -43,6 +44,7 @@ cons_pd.info()
 
 #groupby constructorId, constructorRef, race_year
 congroup = cons_pd.groupby(['race_year','constructorId']).mean()
+
 congroup
 
 # COMMAND ----------
@@ -92,10 +94,139 @@ result
 
 # COMMAND ----------
 
-fig = sm.graphics.plot_ccpr(lg1, "points_x")
-fig.tight_layout(pad=1.0)
+# MAGIC %md #### Model#1
 
 # COMMAND ----------
 
-fig = sm.graphics.plot_ccpr(lg1, "points_x")
-fig.tight_layout(pad=1.0)
+
+#select columns for building the model
+X = congroup.loc[:, ['grid','positionOrder', 'points_x','age_as_of_race','s_autumn','s_spring','s_summer','s_winter']]
+y = congroup['wins']
+X.shape, y.shape
+
+#perform train test split
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+print(X_train.shape)
+print(y_train.shape)
+np.all(np.isnan(X))
+
+X = X.reset_index()
+
+#Fill all missing values with the mean value of each column
+X = X.fillna(X.mean())
+
+#taking log of the column
+X = X.round(2)
+
+
+X
+
+
+# COMMAND ----------
+
+#install mlflow library
+dbutils.library.installPyPI("mlflow", "1.14.0")
+
+# COMMAND ----------
+
+import mlflow
+import mlflow.sklearn
+from sklearn.metrics import mean_squared_error,mean_absolute_error, r2_score
+from sklearn.linear_model import ElasticNet
+import sys
+from math import sqrt
+
+alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
+l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
+  
+with mlflow.start_run():
+    lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
+    lr.fit(X_train, y_train)
+
+    predictions = lr.predict(X_test)
+
+    #(rmse, mae, r2) = eval_metrics(y_test, predicted_qualities)
+
+    #print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
+    #print("  RMSE: %s" % rmse)
+    #print("  MAE: %s" % mae)
+    #print("  R2: %s" % r2)
+    
+    # Create metrics
+    rmse = sqrt(mean_squared_error(y_test, predictions))
+    mae = mean_absolute_error(y_test, predictions)
+    r2 = r2_score(y_test, predictions)
+    print("  rmse: {}".format(rmse))
+    print("  mae: {}".format(mae))
+    print("  R2: {}".format(r2))
+    
+    mlflow.log_param("alpha", alpha)
+    mlflow.log_param("l1_ratio", l1_ratio)
+    mlflow.log_metric("rmse", rmse)
+    mlflow.log_metric("r2", r2)
+    mlflow.log_metric("mae", mae)
+
+    mlflow.sklearn.log_model(lr, "model")
+
+# COMMAND ----------
+
+# MAGIC %md #### Model#2
+
+# COMMAND ----------
+
+
+#select columns for building the model
+X2 = congroup.loc[:, ['points_x']]
+y2 = congroup['wins']
+
+#perform train test split
+from sklearn.model_selection import train_test_split
+X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y2, test_size = 0.2, random_state = 42)
+print(X2_train.shape)
+print(y2_train.shape)
+
+X2 = X2.reset_index()
+
+#Fill all missing values with the mean value of each column
+X2 = X2.fillna(X2.mean())
+
+X2
+
+
+# COMMAND ----------
+
+alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
+l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
+  
+with mlflow.start_run():
+    lr2 = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
+    lr2.fit(X2_train, y2_train)
+
+    predictions2 = lr2.predict(X2_test)
+
+    #(rmse, mae, r2) = eval_metrics(y_test, predicted_qualities)
+
+    #print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
+    #print("  RMSE: %s" % rmse)
+    #print("  MAE: %s" % mae)
+    #print("  R2: %s" % r2)
+    
+    # Create metrics
+    rmse = sqrt(mean_squared_error(y2_test, predictions2))
+    mae = mean_absolute_error(y2_test, predictions2)
+    r2 = r2_score(y2_test, predictions2)
+    print("  rmse: {}".format(rmse))
+    print("  mae: {}".format(mae))
+    print("  R2: {}".format(r2))
+    
+    mlflow.log_param("alpha", alpha)
+    mlflow.log_param("l1_ratio", l1_ratio)
+    mlflow.log_metric("rmse", rmse)
+    mlflow.log_metric("r2", r2)
+    mlflow.log_metric("mae", mae)
+
+    mlflow.sklearn.log_model(lr2, "model")
+
+# COMMAND ----------
+
