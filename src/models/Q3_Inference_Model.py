@@ -155,9 +155,11 @@ with mlflow.start_run():
     
     # Create metrics
     rmse = sqrt(mean_squared_error(y_test, predictions))
+    rmse_train = sqrt(mean_squared_error(y_train, lr.predict(X_train)))
     mae = mean_absolute_error(y_test, predictions)
     r2 = r2_score(y_test, predictions)
     print("  rmse: {}".format(rmse))
+    print("  rmse_train: {}".format(rmse_train))
     print("  mae: {}".format(mae))
     print("  R2: {}".format(r2))
     
@@ -214,9 +216,11 @@ with mlflow.start_run():
     
     # Create metrics
     rmse = sqrt(mean_squared_error(y2_test, predictions2))
+    rmse_train = sqrt(mean_squared_error(y2_train, lr2.predict(X2_train)))
     mae = mean_absolute_error(y2_test, predictions2)
     r2 = r2_score(y2_test, predictions2)
     print("  rmse: {}".format(rmse))
+    print("  rmse_train: {}".format(rmse_train))
     print("  mae: {}".format(mae))
     print("  R2: {}".format(r2))
     
