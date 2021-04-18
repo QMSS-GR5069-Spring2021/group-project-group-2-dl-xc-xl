@@ -46,7 +46,7 @@ your first task is inferential. You are going to try to explain why a driver arr
 Now we move on to prediction. Fit a model using data from 1950:2010, and predict drivers that come in second place between 2011 and 2017. [Remember, this is a predictive model where variables are selected as the subset that is best at predicting the target variable and not for theoretical reasons. This means that your model should not overfit and most likely be different from the model in (1).]
 
 
-     Used random forest and logistic regression for prediction and model validation. 
+     Used random forest and logistic regression for prediction and model validation. Found that "points" is the most important feature in predicting 2nd place. This result is different from inference model because we used different model for prediction. The prediction result implies that in order to achieve a reasonably good score in the upcoming race (2nd place), it is important to have a good track record with high overall points. 
 
 
 ### Question 3： 
