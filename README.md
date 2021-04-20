@@ -17,13 +17,13 @@ Xuejing Li: Q3
 ## Repo Map
 
 ### [src/](https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/src)
-	├── [data] (https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/src/data)
-	├── [features] (https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/src/features)
-	├── [models] (https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/src/models)
-	├── [visualizations] (https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/src/visualizations)
+	├── data
+	├── features 
+	├── models 
+	├── visualizations
 ### [reports/](https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/reports)
-	├── [documents](https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/reports/documents)
-	├── [figures](https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/reports/figures)
+	├── documents
+	├── figures
 ### [references/](https://github.com/QMSS-GR5069-Spring2021/group-project-group-2-dl-xc-xl/tree/main/references)
 
 
